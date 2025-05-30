@@ -1,5 +1,5 @@
 // PCL lib Functions for processing point clouds 
-
+#include <filesystem>
 #include "processPointClouds.h"
 #include <unordered_set>
 
@@ -226,10 +226,9 @@ typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::loadPcd(std::s
 
 
 template<typename PointT>
-std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::string dataPath)
+std::vector<std::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::string dataPath)
 {
-
-    std::vector<boost::filesystem::path> paths(boost::filesystem::directory_iterator{dataPath}, boost::filesystem::directory_iterator{});
+    std::vector<std::filesystem::path> paths(std::filesystem::directory_iterator{dataPath}, std::filesystem::directory_iterator{});
 
     // sort files in accending order so playback is chronological
     sort(paths.begin(), paths.end());

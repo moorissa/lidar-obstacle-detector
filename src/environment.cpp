@@ -1,7 +1,7 @@
 /* \author Aaron Brown */
 // Create simple 3d highway enviroment using PCL
 // for exploring self-driving car sensors
-
+#include <filesystem>
 #include "sensors/lidar.h"
 #include "render/render.h"
 #include "processPointClouds.h"
@@ -218,7 +218,7 @@ void streamPCDdriver() {
     // create pointprocessor object on stack
     ProcessPointClouds<pcl::PointXYZI> pointProcessor; 
 
-    std::vector<boost::filesystem::path> stream = pointProcessor.streamPcd("../src/sensors/data/pcd/data_1");
+    std::vector<std::filesystem::path> stream = pointProcessor.streamPcd("../src/sensors/data/pcd/data_1");
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloud;
     int cnt = 0;
