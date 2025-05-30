@@ -9,3 +9,4 @@ CMakeCache.txt
 *.user
 src_original/*
 build/*
+.DS_Store
