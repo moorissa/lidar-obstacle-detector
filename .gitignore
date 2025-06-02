@@ -1,0 +1,12 @@
+.vs/
+Debug/
+out/
+CMakeFiles/
+CMakeCache.txt
+*.sln
+*.vcxproj
+*.filters
+*.user
+src_original/*
+build/*
+.DS_Store
