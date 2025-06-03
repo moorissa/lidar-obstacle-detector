@@ -7,11 +7,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS "${CXX_FLAGS}")
+message(STATUS "Final compile flags: ${CMAKE_CXX_FLAGS}")
 
 project(playback)
 if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include")
 endif()
+string(REPLACE "-ffloat-store" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 # project(voxel_grid)
 
@@ -23,7 +25,15 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
-add_executable (environment src/environment.cpp src/render/render.cpp src/processPointClouds.cpp)
+add_executable(environment
+    src/environment.cpp
+    src/render/render.cpp
+    src/processPointClouds.cpp
+    src/quiz/cluster/cluster_utils.cpp
+)
+# add_executable(cluster_test
+#     src/quiz/cluster/cluster.cpp
+# )
 target_link_libraries (environment ${PCL_LIBRARIES})
 
 # add_executable (voxel_grid src/pointclouds/voxel_grid.cpp)

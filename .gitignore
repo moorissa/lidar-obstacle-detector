@@ -10,3 +10,4 @@ CMakeCache.txt
 src_original/*
 **/build/**
 .DS_Store
+schema.md

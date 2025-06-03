@@ -1,6 +1,10 @@
 /* \author Aaron Brown */
 // Quiz on implementing kd tree
 
+#ifndef KDTREE_H
+#define KDTREE_H
+
+#include <vector>
 #include "../../render/render.h"
 
 
@@ -22,6 +26,7 @@ struct Node
 		delete right;
 	}
 };
+
 
 struct KdTree
 {
@@ -108,9 +113,16 @@ struct KdTree
 		searchRec(target, root, 0, distanceTol, ids);
 		return ids;
 	}
-	
-
 };
+
+
+// Declare clustering function
+std::vector<std::vector<int>> euclideanCluster(
+    const std::vector<std::vector<float>>& points,
+    KdTree* tree,
+    float distanceTol);
+
+#endif // KDTREE_H
 
 
 

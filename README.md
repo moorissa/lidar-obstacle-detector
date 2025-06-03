@@ -36,8 +36,8 @@ This project primarily deals with [Lidar](https://en.wikipedia.org/wiki/Lidar) d
    - Use smaller sample PCD files that don't require LFS
    - Compress the PCD files if possible
 2. Make a build directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./environment`.
+3. Compile: `cmake .. && make -j`
+4. Run it: `./environment`. Check out line 266-268 to run a specific function in the [`src/environment.cpp`](src/environment.cpp)
 
 #### Dependencies
 * cmake >= 3.10

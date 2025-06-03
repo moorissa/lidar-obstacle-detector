@@ -1,13 +1,14 @@
-/* \author Aaron Brown */
 // Quiz on implementing simple RANSAC line fitting
 
 #include "../../render/render.h"
 #include "../../render/box.h"
+#include "kdtree.h"
+#include "cluster_utils.h"
+#include <algorithm>  // for std::find
+#include <cstdint>
 #include <chrono>
 #include <string>
-#include "kdtree.h"
-#include <algorithm>
-#include <cstdint>
+#include <vector>
 
 // Arguments:
 // window is the region to draw box around
@@ -73,42 +74,6 @@ void render2DTree(Node* node, pcl::visualization::PCLVisualizer::Ptr& viewer, Bo
 
 
 	}
-
-}
-
-void proximity(std::vector<std::vector<float>> points, int idx, std::vector<int>& cluster, std::vector<int>& processed_ids, KdTree* tree, float distanceTol)
-{
-    
-    std::vector<float> target = points[idx];
-    // mark as processed
-    processed_ids.push_back(idx);
-    cluster.push_back(idx);
-    std::vector<int> neighbors = tree->search(target, distanceTol);
-    for (int i : neighbors)
-    {
-        if ((std::find(processed_ids.begin(), processed_ids.end(), i) == processed_ids.end()) || (processed_ids.empty()))
-            proximity(points, i, cluster, processed_ids, tree, distanceTol);
-    }
-}
-
-
-std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
-{
-
-	// TODO: Fill out this function to return list of indices for each cluster
-	std::vector<std::vector<int>> clusters;
-    std::vector<int> processed_ids;
-    for (int idx = 0; idx < points.size(); idx++)
-    {
-        // point not in processed_ids vector or processed_ids vector is empty
-        if ((std::find(processed_ids.begin(), processed_ids.end(), idx) == processed_ids.end()) || (processed_ids.empty()))
-        {
-            std::vector<int> cluster;
-            proximity(points, idx, cluster, processed_ids, tree, distanceTol);
-            clusters.push_back(cluster);
-        }
-    }
-	return clusters;
 
 }
 

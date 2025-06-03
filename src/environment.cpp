@@ -1,6 +1,3 @@
-/* \author Aaron Brown */
-// Create simple 3d highway enviroment using PCL
-// for exploring self-driving car sensors
 #include <filesystem>
 #include "sensors/lidar.h"
 #include "render/render.h"
@@ -137,9 +134,29 @@ void cityBlockSinglePCD(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessP
     float ClusterTolerance = 0.5;
     int MinSize = 15; // 10 for data_2
     int MaxSize = 400;
+
+    // make sure Clustering alg is running ok
+    std::cout << "Starting clustering with tolerance " << ClusterTolerance << ", min size " << MinSize << ", max size " << MaxSize << std::endl;
+
+
     std::vector < pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessor.Clustering(segmentCloud.first, ClusterTolerance, MinSize, MaxSize);
+
+    // print out output
+    std::cout << "Number of clusters found: " << cloudClusters.size() << std::endl;
+
     int clusterId = 1;
     std::vector<Color> colors = { Color(1,0,0), Color(0,1,0), Color(0,0,1) };
+
+    for (pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : cloudClusters)
+    {
+        std::cout << "Cluster " << clusterId << " size: " << cluster->points.size() << " points" << std::endl;
+        // your existing rendering code...
+        renderPointCloud(viewer, cluster, "obstCloud" + std::to_string(clusterId), colors[clusterId % 3]);
+        Box box = pointProcessor.BoundingBox(cluster);
+        renderBox(viewer, box, clusterId, Color(1, 0, 0), 0.5);
+        ++clusterId;
+    }
+
 
     // render the cluster
     for (pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : cloudClusters)
@@ -243,9 +260,10 @@ void streamPCDdriver() {
 }
 
 
+// Run one function at a time to test
 int main (int argc, char** argv)
 {
-    simpleHighwayDriver();
-    singlePCDdriver();
-    streamPCDdriver();  
+    // simpleHighwayDriver();
+    // singlePCDdriver();
+    streamPCDdriver();  // final output
 }
