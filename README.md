@@ -74,6 +74,8 @@ To simulate the point cloud generation process, a simple lidar model is used. Th
 <img src="assets/2025.05.29-00-highway-lidar-point-clouds-using-visualizer-kit.png" width="591" height="335"/>
 </p>
 
+
+
 ## 5. Real World Point Cloud Data <a name="realworldPCD"></a>
 The different point cloud processing techniques described in the subsequent section can be applied to the simulated set of point clouds that are obtained using the previously described lidar model. This can serve as a simplified learning experience and can be used to debug and the different algorithims involved. However going forward, these techniques will be applied on real world PCD data obtained from an actual lidar. 
 
@@ -132,11 +134,6 @@ To get the best results from your point cloud processing pipeline, consider the 
 
 ## 6. Point Cloud Segmentation <a name="segmentation"></a>
 One of the key objectives of lidar point cloud processing is to separate the road plane from potential obstacles. If the road is flat it’s fairly straightforward to pick out road points from non-road points. To achieve this, planar segmentation based on the random sampling consensus (RANSAC) algorithm is used. 
-
-<!-- <p align="center">
-<img src="assets/2025.05.30-02-segmentation.png" width="591" height="335"/>
-</p> -->
-
 
 ### RANSAC (Random Sample Consensus) Plane Segmentation
 RANSAC stands for random sampling consensus and is a method for detecting outliers in data. The algorithm runs for a set number of iterations and returns the model that best fits the data. Each of these iterations randomly picks a subset of data and fits a model such as a line or plane through it. The iteration with the highest number of inliers or lower noise is then used as the best model. To be precise, here is a step-by-step instruction to detect obstacles in a point cloud scene by separating them from the road surface (which is not an obstacle).
@@ -228,6 +225,7 @@ The clustered real world PCD data is shown below.
 <p align="center">
 <img src="assets/2025.05.30-08-clustered-point-cloud.JPG" width="591" height="335"/>
 </p>
+
 
 
 ### How to improve the tree

@@ -122,9 +122,6 @@ void cityBlockSinglePCD(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessP
     // renderPointCloud(viewer, segmentCloud.first, "obstCloud", Color(1, 0, 0));
     renderPointCloud(viewer, segmentCloud.second, "planeCloud", Color(0.5, 0.5, 0.5));
 
-    // Segmentation using Ransac3d - too slow
-    // std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentCloud = pointProcessor.RansacPlaneSegment(inputCloud, maxIter, distThresh);
-
     // ego car box
     // xmin, ymin, zmin, xmax, ymax, zmax
     Box ego_box = { -1.5, -1.2, -1, 2.6, 1.2, -0.4};

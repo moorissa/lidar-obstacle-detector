@@ -48,9 +48,6 @@ public:
     typename pcl::PointCloud<PointT>::Ptr loadPcd(std::string file);
 
     std::vector<std::filesystem::path> streamPcd(std::string dataPath);
-
-    std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> RansacPlaneSegment(typename pcl::PointCloud<PointT>::Ptr cloud, float maxIterations, float distanceTol);
-
   
 };
 #endif /* PROCESSPOINTCLOUDS_H_ */
