@@ -18,6 +18,7 @@ This project primarily deals with [Lidar](https://en.wikipedia.org/wiki/Lidar) d
 - [Planar Segmentation](#segmentation)
 - [Euclidean Clustering](#clustering)
 - [Bounding Boxes](#boxes)
+- [Runtime](#runtime)
 - [Acknowledgements](#acknowledgements)
 
 
@@ -262,7 +263,7 @@ In the image above, the bounding box on the right and is more efficient, taking 
 
 
 
-## 9. Runtime
+## 9. Runtime <a name="runtime"></a>
 A breakdown of the runtime complexity in the above LiDAR pipeline:
 
 **1. RANSAC Plane Segmentation (3D)** has a runtime of `O(N × I)`, where:
