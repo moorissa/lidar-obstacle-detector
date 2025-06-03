@@ -262,7 +262,44 @@ In the image above, the bounding box on the right and is more efficient, taking 
 
 
 
-## 9. Ackowledgements <a name="acknowledgements"></a>
+## 9. Runtime
+A breakdown of the runtime complexity in the above LiDAR pipeline:
+
+**1. RANSAC Plane Segmentation (3D)** has a runtime of `O(N × I)`, where:
+* N = number of points in the point cloud
+* I = number of RANSAC iterations (typically 50–100)
+
+In the current use case:
+* Each iteration randomly selects 3 points (O(1))
+* Fits a plane from the 3 (O(1))
+* Checks all N points for inlier distance (O(N))
+* Repeats for I iterations → O(N × I)
+
+
+**2. Euclidean Clustering (with KD-Tree)** has a runtime of `O(N × log N)`, where:
+* Each insertion into the KD-tree takes O(log N) in balanced cases
+* For N points → total: O(N log N)
+
+Search Neighbors for Clustering: O(N × log N)
+* For each point, you search nearby points within a distance tolerance.
+* Naive search = O(N²), but with KD-tree, search is O(log N) per point.
+
+Total Clustering Time: O(N log N)
+* Traversing all unprocessed points
+* Each proximity search bounded by neighbors (assume constant due to density)
+
+
+**3. Total Runtime (Typical Frame)** therefore is `O(N × (I + log N))`. So the runtime grows almost linearly with the number of points N, and slightly more due to log N from the tree operations. It’s efficient for real-time systems with ~10⁴–10⁵ points.
+
+Optimization tips:
+* Downsample (Voxel Grid): Reduces N before RANSAC and clustering → Huge impact.
+* Adaptive RANSAC: Stop early if enough inliers found.
+* Parallel KD-Tree or Proximity: Useful for large clouds or real-time constraints.
+* Use bounding box heuristics: To skip sparse regions.
+
+
+
+## 10. Ackowledgements <a name="acknowledgements"></a>
 * [Udacity Sensor Fusion Program](https://www.udacity.com/course/sensor-fusion-engineer-nanodegree--nd313)
 
 For any questions or feedback, feel free to email [moorissa.tjokro@columbia.edu](mailto:moorissa.tjokro@columbia.edu).
