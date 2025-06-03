@@ -23,7 +23,18 @@ This project primarily deals with [Lidar](https://en.wikipedia.org/wiki/Lidar) d
 
 
 ## 3. Project Instructions <a name="build"></a>
-1. Clone this repo.
+1. Clone this repo with LFS, which can be done in two ways:
+	1. `git lfs clone https://github.com/moorissa/lidar-obstacle-detector.git` OR
+	2. Alternatively:
+		```bash
+		git clone https://github.com/moorissa/lidar-obstacle-detector.git
+		cd lidar-obstacle-detector  # ensure no duplicated names in the same directory
+		git lfs pull
+		```
+	If LFS continues causing (submission) issues:
+   - Upload PCD files to a cloud service (Google Drive, Dropbox) and include download links
+   - Use smaller sample PCD files that don't require LFS
+   - Compress the PCD files if possible
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./environment`.
