@@ -238,7 +238,7 @@ std::vector<std::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::st
 }
 
 
-// custom functions
+// RANSAC plane segmentation implementation
 template<typename PointT>
 std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::RansacPlaneSegment(typename pcl::PointCloud<PointT>::Ptr cloud, float maxIterations, float distanceTol)
 {
@@ -268,14 +268,17 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
         // clear this every iteration
         inliers.clear();
 
-        // ensure same indices are not picked
-        while (true) {
-            ind1 = rand() % cloud->points.size();
-            ind2 = rand() % cloud->points.size();
-            ind3 = rand() % cloud->points.size();
-            if (ind1 != ind2 && ind2 != ind3 && ind1 != ind3)
-                break;
+        // create a set to make sure same indices are not selected
+        std::unordered_set<int> indices;
+        while (indices.size() < 3) {
+            int idx = rand() % cloud->points.size();
+            indices.insert(idx);
         }
+
+        auto it = indices.begin();
+        ind1 = *it++;
+        ind2 = *it++;
+        ind3 = *it;
 
         // points to construct the plane
         PointT p1 = cloud->points[ind1];
