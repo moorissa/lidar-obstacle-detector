@@ -38,7 +38,7 @@ struct KdTree
 
 	// either use return or use a double pointer/pointer by reference. 
 	// using the latter methods, the changes are directly reflected in the calling function
-	void insertRec(Node** root, std::vector<float> point, int depth, int id)
+	void insertRec(Node** root, const std::vector<float>& point, int depth, int id)
 	{
 		if (*root == NULL)
 		{
@@ -46,15 +46,12 @@ struct KdTree
 		}
 		else
 		{
-			idx = depth % 2;
+			int idx = depth % 3;  // Cycles through dimensions 0, 1, 2 (x, y, z)
 			if (point[idx] < ((*root)->point[idx]))
-				//(*root)->left = insertRec(&((*root)->left), point, depth + 1, id);
 				insertRec(&((*root)->left), point, depth + 1, id);
 			else
-				//(*root)->right = insertRec(&((*root)->right), point, depth + 1, id);
 				insertRec(&((*root)->right), point, depth + 1, id);
 		}
-
 	}
 
 	void insert(std::vector<float> point, int id)
@@ -65,35 +62,41 @@ struct KdTree
 	}
 
 	// return a list of point ids in the tree that are within distance of target
-	bool distCompare(std::vector<float> point1, std::vector<float> point2, float distTol)
+	bool distCompare(const std::vector<float>& point1, const std::vector<float>& point2, float distTol)
 	{
+		// Ensure both points have at least 3 dimensions
+		if (point1.size() < 3 || point2.size() < 3) {
+			return false;
+		}
+		
 		float x = point1[0] - point2[0];
 		float y = point1[1] - point2[1];
-		std::cout << x << std::endl;
-		if (sqrt((x * x + y * y)) <= distTol)
-		{	
-			//std::cout << sqrt((x * x + y * y)) << std::endl;
-			return true;
-		}
-		return false;
+		float z = point1[2] - point2[2];
+		
+		float distSquared = x * x + y * y + z * z;
+		return distSquared <= (distTol * distTol);
 	}
 
-	void searchRec(std::vector<float> target, Node* root, int depth, float distTol, std::vector<int>& ids)
+	void searchRec(const std::vector<float>& target, Node* root, int depth, float distTol, std::vector<int>& ids)
 	{
 		if (root != NULL)
 		{	
-			if((node->point[0] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol)) && (node->point[1] >= (target[1] - distanceTol) && node->point[1] <= (target[1] + distanceTol))) {
+			// 3D bounding box check
+			if((root->point[0] >= (target[0] - distTol) && root->point[0] <= (target[0] + distTol)) && 
+			(root->point[1] >= (target[1] - distTol) && root->point[1] <= (target[1] + distTol)) &&
+			(root->point[2] >= (target[2] - distTol) && root->point[2] <= (target[2] + distTol))) {
+				
 				if (distCompare(target, root->point, distTol))
 				{
 					ids.push_back(root->id);
 				}
 			}
 
-			idx = depth % 2;
+			int idx = depth % 3;  // Cycles through x, y, z dimensions
+			
 			if ((target[idx] - distTol) < root->point[idx])
 				searchRec(target, root->left, depth + 1, distTol, ids);
 
-			// if target X + dist tol is still less than the point's X, then don't go down the right side of the tree
 			if ((target[idx] + distTol) > root->point[idx])
 				searchRec(target, root->right, depth + 1, distTol, ids);
 		}
