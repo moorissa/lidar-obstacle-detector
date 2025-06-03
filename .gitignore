@@ -8,5 +8,5 @@ CMakeCache.txt
 *.filters
 *.user
 src_original/*
-build/*
+**/build/**
 .DS_Store
