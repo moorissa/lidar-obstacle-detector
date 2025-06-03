@@ -1,23 +1,41 @@
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+# Updated CMakeLists.txt to include render source files
 
-add_definitions(-std=c++14)
+cmake_minimum_required(VERSION 3.10)
+project(quizCluster)
 
-set(CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
+# Set C++17 standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-project(playback)
+# Find PCL
+find_package(PCL REQUIRED)
 
-find_package(PCL 1.2 REQUIRED)
-
+# Include directories
 include_directories(${PCL_INCLUDE_DIRS})
+# Add your render directory to include path
+include_directories(../render)  # Path to src/render from src/quiz/cluster
+
+# Link directories
 link_directories(${PCL_LIBRARY_DIRS})
+
+# Add definitions
 add_definitions(${PCL_DEFINITIONS})
-list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
+# Include render.cpp in your executable
+add_executable(quizCluster 
+    cluster.cpp
+    /Users/moorissa/Repos/sensor_fusion/lidar-obstacle-detector/src/render/render.cpp  # Correct path: src/render/render.cpp
+)
 
-add_executable (quizCluster cluster.cpp ../../render/render.cpp)
-target_link_libraries (quizCluster ${PCL_LIBRARIES})
+# SOLUTION 2: Alternative - Create a render library first
+# add_library(render_lib ../render/render.cpp)
+# add_executable(quizCluster cluster.cpp)
+# target_link_libraries(quizCluster render_lib ${PCL_LIBRARIES})
 
+# Link libraries
+target_link_libraries(quizCluster ${PCL_LIBRARIES})
 
-
-
+# If you need additional PCL components, specify them:
+# find_package(PCL REQUIRED COMPONENTS common io visualization)
+# target_link_libraries(quizCluster ${PCL_LIBRARIES})
